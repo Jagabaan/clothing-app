@@ -1,0 +1,11 @@
+# dependencies
+rim/node_modules
+server/node_modules
+
+# environment
+.env
+.env.local
+
+# build
+rim/dist
+server/build
