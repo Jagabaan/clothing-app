@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+
+import AuthLayout from "./components/authentication/layout.jsx";
+import AuthenticationLogin from "./pages/authentication/login.jsx";
+import AuthenticationRegister from "./pages/authentication/register.jsx";
+import AdminFrontEndLayout from "./components/adminFrontEnd/layout.jsx";
+import AdminProducts from "./pages/adminFrontEnd/products.jsx";
+import AdminOrders from "./pages/adminFrontEnd/orders.jsx";
+import AdminFeatures from "./pages/adminFrontEnd/features.jsx";
+import AdminDashboard from "./pages/adminFrontEnd/dashboard.jsx";
+import UserFrontEndLayout from "./components/userFrontEnd/layout.jsx";
+import PageNotFound from "./pages/notExist/index.jsx";
+import UserHome from "./pages/userFrontEnd/home.jsx";
+import UserProductList from "./pages/userFrontEnd/producstList.jsx";
+import UserCheckout from "./pages/userFrontEnd/checkout.jsx";
+import UserAccount from "./pages/userFrontEnd/account.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route path="/auth" element={<AuthLayout />}>
+        <Route path="login" element={<AuthenticationLogin />} />
+        <Route path="register" element={<AuthenticationRegister />} />
+      </Route>
+
+     <Route path="/admin" element={<AdminFrontEndLayout />}>
+     <Route path="dashboard" element={<AdminDashboard />}/>
+      <Route path="products" element={<AdminProducts />}/>
+      <Route path="orders" element={<AdminOrders />}/>
+      <Route path="features" element={<AdminFeatures />}/>
+     </Route>
+
+     <Route path="shop" element={<UserFrontEndLayout/>} >
+      <Route path="home" element={<UserHome/>} />
+      <Route path="products" element={<UserProductList/>} />
+      <Route path="checkout" element={<UserCheckout/>} />
+      <Route path="account" element={<UserAccount/>} />
+      </Route>
+
+      <Route path="*" element={<PageNotFound/>} />
+
+    </Routes>
+  );
 }
 
-export default App
+export default App;
