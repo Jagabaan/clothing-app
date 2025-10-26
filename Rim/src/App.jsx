@@ -14,23 +14,45 @@ import UserHome from "./pages/userFrontEnd/home.jsx";
 import UserProductList from "./pages/userFrontEnd/producstList.jsx";
 import UserCheckout from "./pages/userFrontEnd/checkout.jsx";
 import UserAccount from "./pages/userFrontEnd/account.jsx";
+import AuthValidation from "./components/sharedComponent/auth-validation.jsx";
+import UnAuthorize from "./pages/unauthorize/index.jsx"
 
 function App() {
+
+  const isAuthenticated = true;
+  const user = {
+    name: "jagaban",
+    role: "admin"
+  }
+
   return (
+    <div className="flex flex-col overflow-hidden bg-white " >
     <Routes>
-      <Route path="/auth" element={<AuthLayout />}>
+      <Route path="/auth" element={
+        <AuthValidation isAuthenticated={isAuthenticated} user={user}>
+          <AuthLayout />
+        </AuthValidation>
+      }>
         <Route path="login" element={<AuthenticationLogin />} />
         <Route path="register" element={<AuthenticationRegister />} />
       </Route>
 
-     <Route path="/admin" element={<AdminFrontEndLayout />}>
+     <Route path="/admin" element={
+      <AuthValidation isAuthenticated={isAuthenticated} user={user}>
+        <AdminFrontEndLayout />
+      </AuthValidation>
+     }>
      <Route path="dashboard" element={<AdminDashboard />}/>
       <Route path="products" element={<AdminProducts />}/>
       <Route path="orders" element={<AdminOrders />}/>
       <Route path="features" element={<AdminFeatures />}/>
      </Route>
 
-     <Route path="shop" element={<UserFrontEndLayout/>} >
+     <Route path="shop" element={
+      <AuthValidation isAuthenticated={isAuthenticated} user={user} >
+        <UserFrontEndLayout/>
+      </AuthValidation>
+     } >
       <Route path="home" element={<UserHome/>} />
       <Route path="products" element={<UserProductList/>} />
       <Route path="checkout" element={<UserCheckout/>} />
@@ -38,8 +60,10 @@ function App() {
       </Route>
 
       <Route path="*" element={<PageNotFound/>} />
+      <Route path="/unauthorize" element={<UnAuthorize/>} />
 
     </Routes>
+    </div>
   );
 }
 
