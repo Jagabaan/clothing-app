@@ -106,7 +106,7 @@ function SharedForm({ controls, formData, setFormData, onSubmit, buttonText }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit && onSubmit();
+        onSubmit && onSubmit(e);
       }}
       className="flex flex-col h-full"
     >
