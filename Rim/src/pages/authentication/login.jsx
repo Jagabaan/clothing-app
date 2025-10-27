@@ -2,13 +2,29 @@ import SharedForm from "@/components/sharedComponent/form";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LoginnForm } from "../../config/index.js";
+import { useDispatch } from "react-redux";
+import { login } from "@/storage/authSlice/index.js";
+import { toast } from "sonner"; 
 
 const initialState = { email: "", password: "" };
 
 function AuthenticationLogin() {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
 
-  function onSubmit() {}
+  function onSubmit(event) {
+    event.preventDefault();
+    console.log("Form data before login:", formData);
+
+    dispatch(login(formData)).then((data) => {
+        console.log("Login response payload:", data.payload);
+      if (data?.payload?.success) {
+        toast.success(data?.payload?.message || "Login successful");
+      } else {
+        toast.error(data?.payload?.message || "Invalid email or password");
+      }
+    });
+  }
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
@@ -28,11 +44,8 @@ function AuthenticationLogin() {
         </p>
       </div>
 
-      {/* FORM CARD (fill available height but keep button visible) */}
-      <div className="w-full max-w-2xl sm:max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border border-gray-100
-                      flex flex-col min-h-0"
-      >
-        {/* make SharedForm occupy remaining space; it will present a scrollable inputs area if needed */}
+      {/* FORM CARD */}
+      <div className="w-full max-w-2xl sm:max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border border-gray-100 flex flex-col min-h-0">
         <SharedForm
           controls={LoginnForm}
           buttonText="Sign In"

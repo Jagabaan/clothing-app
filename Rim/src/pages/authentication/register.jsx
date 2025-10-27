@@ -1,27 +1,42 @@
 import SharedForm from "@/components/sharedComponent/form";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registrationForm } from "../../config/index.js";
+import { useDispatch } from "react-redux";
+import { rimUserRegister } from "@/storage/authSlice/index.js";
+import { toast } from "sonner"; 
 
 const initialState = {
-  userName: "",
+  username: "",
   email: "",
   password: "",
+  confirmPassword: "",
 };
 
 function AuthenticationRegister() {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  function onSubmit() {}
+  function onSubmit(event) {
+    event.preventDefault();
+
+    dispatch(rimUserRegister(formData)).then((data) => {
+      if (data?.payload?.success) {
+        toast.success(data?.payload?.message || "Registration successful 🎉");
+        navigate("/auth/login");
+      } else {
+        toast.error(data?.payload?.message || "Email already in use ❌");
+      }
+    });
+  }
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       {/* HEADER */}
       <div className="text-center mb-6">
-        <h1
-          className="text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 whitespace-nowrap"
-        >
-          Create Account 
+        <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 whitespace-nowrap">
+          Create Account
         </h1>
         <p className="text-lg text-gray-600">
           Already have an account?
@@ -48,7 +63,7 @@ function AuthenticationRegister() {
         />
       </div>
 
-     
+      {/* FOOTER */}
       <div className="text-center text-sm text-gray-500 mt-6">
         &copy; {new Date().getFullYear()} Rim. All rights reserved.
       </div>

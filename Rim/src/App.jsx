@@ -16,14 +16,21 @@ import UserCheckout from "./pages/userFrontEnd/checkout.jsx";
 import UserAccount from "./pages/userFrontEnd/account.jsx";
 import AuthValidation from "./components/sharedComponent/auth-validation.jsx";
 import UnAuthorize from "./pages/unauthorize/index.jsx"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./storage/authSlice/index.js";
 
 function App() {
 
-  const isAuthenticated = true;
-  const user = {
-    name: "jagaban",
-    role: "admin"
-  }
+const {user, isAuthenticated, isLoading} = useSelector(state=> state.auth)
+const dispatch = useDispatch();
+
+useEffect(()=>{
+ dispatch(checkAuth())
+}, [dispatch]);
+if(isLoading) return <div>Loading...</div>;
+console.log(isLoading, user)
+
 
   return (
     <div className="flex flex-col overflow-hidden bg-white " >
