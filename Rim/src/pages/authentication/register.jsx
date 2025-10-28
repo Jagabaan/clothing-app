@@ -1,5 +1,5 @@
 import SharedForm from "@/components/sharedComponent/form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registrationForm } from "../../config/index.js";
 import { useDispatch } from "react-redux";
@@ -14,26 +14,36 @@ const initialState = {
 };
 
 function AuthenticationRegister() {
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState(() => {
+    const saved = sessionStorage.getItem("registerForm");
+    return saved ? JSON.parse(saved) : initialState;
+  });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  function onSubmit(event) {
+  useEffect(() => {
+    sessionStorage.setItem("registerForm", JSON.stringify(formData));
+  }, [formData]);
+
+  async function onSubmit(event) {
     event.preventDefault();
 
-    dispatch(rimUserRegister(formData)).then((data) => {
-      if (data?.payload?.success) {
-        toast.success(data?.payload?.message || "Registration successful 🎉");
-        navigate("/auth/login");
-      } else {
-        toast.error(data?.payload?.message || "Email already in use ❌");
-      }
-    });
+    const response = await dispatch(rimUserRegister(formData));
+    const data = response?.payload;
+
+    if (data?.success) {
+      toast.success(data?.message || "Registration successful 🎉");
+      sessionStorage.removeItem("registerForm");
+      navigate("/auth/login");
+    } else {
+      toast.error(data?.message || "Email already in use ❌");
+
+    }
   }
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      {/* HEADER */}
       <div className="text-center mb-6">
         <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 whitespace-nowrap">
           Create Account
@@ -49,7 +59,6 @@ function AuthenticationRegister() {
         </p>
       </div>
 
-      {/* FORM CARD */}
       <div
         className="w-full max-w-2xl sm:max-w-3xl bg-white rounded-3xl shadow-xl 
                    p-6 sm:p-8 lg:p-10 border border-gray-100 flex flex-col min-h-0"
@@ -63,7 +72,6 @@ function AuthenticationRegister() {
         />
       </div>
 
-      {/* FOOTER */}
       <div className="text-center text-sm text-gray-500 mt-6">
         &copy; {new Date().getFullYear()} Rim. All rights reserved.
       </div>
