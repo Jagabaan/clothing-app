@@ -33,7 +33,8 @@ console.log(isLoading, user)
 
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white " >
+    <div className="min-h-screen w-screen bg-white flex flex-col">
+
     <Routes>
       <Route path="/auth" element={
         <AuthValidation isAuthenticated={isAuthenticated} user={user}>
