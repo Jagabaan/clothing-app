@@ -10,7 +10,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 
-function SharedForm({ controls, formData, setFormData, onSubmit, buttonText }) {
+function SharedForm({ controls, formData, setFormData, onSubmit, buttonText, isBtnDisabled }) {
   function renderByComponentType(controlItem) {
     let element = null;
     const value = formData?.[controlItem.name] || "";
@@ -123,6 +123,7 @@ function SharedForm({ controls, formData, setFormData, onSubmit, buttonText }) {
 
       <div className="mt-4">
         <Button
+         disabled = {isBtnDisabled}
           type="submit"
           className="w-full h-11 text-base font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-all duration-200"
         >
