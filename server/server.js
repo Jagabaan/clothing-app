@@ -5,6 +5,7 @@ const cors = require('cors')
 
 const connectToDb = require('./utils/connectToDb')
 const authenticationRouter = require('./routes/authentication/auth-routes.js')
+const adminProductRouter = require('./routes/admin/products-routes.js')
 
 
 connectToDb();
@@ -32,6 +33,7 @@ app.use(cors(corsOptions));
 app.use(cookieparser());
 app.use(express.json());
 app.use('/api/auth', authenticationRouter);
+app.use('/api/admin/products', adminProductRouter)
 
 
 app.listen(PORT, () => {

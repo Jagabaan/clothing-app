@@ -29,7 +29,7 @@ useEffect(()=>{
  dispatch(checkAuth())
 }, [dispatch]);
 if(isLoading) return <div>Loading...</div>;
-console.log(isLoading, user)
+
 
 
   return (
@@ -71,6 +71,7 @@ console.log(isLoading, user)
       <Route path="/unauthorize" element={<UnAuthorize/>} />
 
     </Routes>
+    
     </div>
   );
 }

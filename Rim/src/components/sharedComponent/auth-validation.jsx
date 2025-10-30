@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 function AuthValidation({ isAuthenticated, user, children }) {
   const location = useLocation();
   const path = location.pathname;
-  console.log(location.pathname.isAuthenticated)
+
   if (
     !isAuthenticated &&
     !(
