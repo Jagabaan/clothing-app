@@ -41,6 +41,23 @@ export const login = createAsyncThunk(
   }
 );
 
+//LogOut
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async ( _,{ rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/logout",{},
+       
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Login failed");
+    }
+  }
+);
+
 //checAuth
 export const checkAuth = createAsyncThunk(
   "auth/checkauth",
@@ -131,7 +148,11 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
-      })
+      }) .addCase(logoutUser.fulfilled, (state, action) => {
+    state.isLoading = false;
+    state.user = null;
+    state.isAuthenticated = false
+   })
       ;
   },
   });

@@ -1,7 +1,16 @@
 import { Button } from "@/components/ui/button"
+import { logoutUser } from "@/storage/authSlice"
 import { AlignJustify, LogOut } from "lucide-react"
+import { useDispatch } from "react-redux"
 
 function AdminHeader({onClose}) {
+
+    const dispatch = useDispatch()
+
+    function handleLogout(){
+      dispatch(logoutUser())
+    }
+
   return (
     <header className="flex items-center px-4 py-3 bg-background border-b">
       {/* Mobile Menu Button */}
@@ -19,7 +28,7 @@ function AdminHeader({onClose}) {
 
       {/* Push logout button to the right */}
       <div className="flex flex-1 justify-end">
-        <Button
+        <Button onClick={handleLogout}
           className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium
                      bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-md
                      hover:from-primary/90 hover:to-primary/70 focus-visible:outline-none 
