@@ -36,6 +36,7 @@ const login = async (req, res) => {
         id: user._id,
         email: user.email,
         role: user.role,
+        userName: user.username,
       },
       process.env.JWT_SECRET,
       { expiresIn: '40m' }
@@ -57,6 +58,7 @@ const login = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
+        userName: user.username,
       },
     });
   } catch (error) {
