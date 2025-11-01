@@ -134,6 +134,27 @@ export const userViewHeaderMenuItems = [
 }
 ]
 
+export const categoryOptionsMap = 
+  {
+    "men" : "Men",
+  "women" : "Women",
+  'kids' : "Kids",
+  'accessories' : "Accessories",
+  'footwear' : "Footwear"
+  }
+
+
+export const brandOptionsMap = 
+  {
+    "nike" : "Nike",
+    "adidas" : "Adidas",
+    "puma" : "Puma",
+    "levi" : "Levi's",
+    "zara" : "Zara",
+    "h&m" : "H&M"
+  }
+
+
 export const filterOptions = {
   category: [
     { id: "men", label: "Men" },
@@ -151,3 +172,10 @@ export const filterOptions = {
     { id: "h&m", label: "H&M" },
   ],
 };
+
+export const sortOptions = [
+  { id: "price-lowtohigh", label: "Price: Low to High" },
+  { id: "price-hightolow", label: "Price: High to Low" },
+  { id: "title-atoz", label: "Title: A to Z" },
+  { id: "title-ztoa", label: "Title: Z to A" },
+];
