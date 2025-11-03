@@ -1,24 +1,88 @@
-const RimProduct = require("../../models/rimProducts")
+const RimProduct = require("../../models/rimProducts");
 
-const getFilteredProducts = async (req,res) => {
-    try {
+const getFilteredProducts = async (req, res) => {
+  try {
+    const {
+      category = "",
+      brand = "",
+      sortBy = "price-lowtohigh"
+    } = req.query;
 
-        const products = await RimProduct.find({});
+    // Build filters
+    let filters = {};
 
-        res.status(200).json({
-            success: true,
-            data: products
+    if (category) {
+      filters.category = { $in: category.split(",") };
+    }
+
+    if (brand) {
+      filters.brand = { $in: brand.split(",") };
+    }
+
+    // Sorting logic
+    let sort = {};
+
+    switch (sortBy) {
+      case "price-lowtohigh":
+        sort.price = 1;
+        break;
+
+      case "price-hightolow":
+        sort.price = -1;
+        break;
+
+      case "title-atoz":
+        sort.title = 1;
+        break;
+
+      case "title-ztoa":
+        sort.title = -1;
+        break;
+
+      default:
+        sort.price = 1;
+    }
+
+    const products = await RimProduct.find(filters).sort(sort);
+
+    return res.status(200).json({
+      success: true,
+      data: products
+    });
+
+  } catch (error) {
+    console.error("Error fetching filtered products:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+const getProductDetails = async(req,rs)=>{
+    try{
+        const {id} = req.params;
+        const product = await RimProduct.findById(id);
+
+        if(!product) return res.status(400).json({
+            success : false,
+            message : 'Product not found'
         })
 
+        res.status(201).json(
+           {
+            success : true,
+            data : product
+           } 
+        )
     }
     catch (error) {
-      console.error("Error fetching filtered products:", error);
-      res.status(500).json({
-        success: false,
-        message: "Internal server error"
-     });  
+          console.error("Error fetching filtered products:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
     }
 }
-module.exports = {
-    getFilteredProducts
-}
+
+module.exports = { getFilteredProducts , getProductDetails};
