@@ -59,7 +59,7 @@ const getFilteredProducts = async (req, res) => {
   }
 };
 
-const getProductDetails = async(req,rs)=>{
+const getProductDetails = async(req,res)=>{
     try{
         const {id} = req.params;
         const product = await RimProduct.findById(id);
@@ -69,7 +69,7 @@ const getProductDetails = async(req,rs)=>{
             message : 'Product not found'
         })
 
-        res.status(201).json(
+        res.status(200).json(
            {
             success : true,
             data : product

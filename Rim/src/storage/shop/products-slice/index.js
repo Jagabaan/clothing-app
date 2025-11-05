@@ -16,7 +16,7 @@ export const fetchAllFilteredProducts = createAsyncThunk('/products/fetchAllProd
         sortBy : sortParams
     })
 
- const result = await axios.get(`http://localhost:3000/api/shop/products/get?${query}` )
+ const result = await axios.get(`http://localhost:3000/api/shop/products/get/?${query}` )
  console.log(result,'result in thunk')
  return result?.data.data;
 })
@@ -24,9 +24,9 @@ export const fetchAllFilteredProducts = createAsyncThunk('/products/fetchAllProd
 export const fetchProductDetails = createAsyncThunk('/products/fetchProductDetails', async (id)=> {
 
 
- const result = await axios.get(`http://localhost:3000/api/shop/products/get?${id}` )
+ const result = await axios.get(`http://localhost:3000/api/shop/products/get/${id}` )
  console.log(result,'result in thunk')
- return result?.data;
+ return result?.data.data;
 })
 
 
@@ -50,7 +50,7 @@ const shoppingProductSlice = createSlice({
         }).addCase(fetchProductDetails.fulfilled, (state, action)=> {
             console.log("Fetched products:", action.payload);
             state.isLoading = false
-            state.productDetails = action.payload.data
+            state.productDetails = action.payload
         }).addCase(fetchProductDetails.rejected, (state, action)=> {
             
             state.isLoading = false
