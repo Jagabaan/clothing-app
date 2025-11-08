@@ -5,7 +5,7 @@ import { brandOptionsMap, categoryOptionsMap } from "@/config";
 function ShoppingProductTile({ product, handleFetProductDetails }) {
   return (
     <Card
-      className="w-full max-w-xs sm:max-w-none mx-auto rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 bg-white"
+      className="w-full max-w-xs sm:max-w-none mx-auto rounded-2xl overflow-hidden border border-gray-200 hover:shadow-md transition-transform duration-300 bg-white"
     >
       <div onClick={() => handleFetProductDetails(product?._id)} className="cursor-pointer">
         {/* Product Image */}
@@ -13,7 +13,8 @@ function ShoppingProductTile({ product, handleFetProductDetails }) {
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[220px] sm:h-[260px] md:h-[300px] object-contain p-3 transition-transform duration-300 hover:scale-105"
+            loading="lazy"
+            className="w-full h-[220px] sm:h-[260px] md:h-[300px] object-contain p-3 transform-gpu transition-transform duration-300 hover:scale-105"
           />
         </div>
 
