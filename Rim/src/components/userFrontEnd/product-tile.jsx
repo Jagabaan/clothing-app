@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
 
-function ShoppingProductTile({ product, handleFetProductDetails }) {
+function ShoppingProductTile({ product, handleFetProductDetails, handleAddToCart }) {
   return (
     <Card
       className="w-full max-w-xs sm:max-w-none mx-auto rounded-2xl overflow-hidden border border-gray-200 hover:shadow-md transition-transform duration-300 bg-white"
@@ -39,16 +39,16 @@ function ShoppingProductTile({ product, handleFetProductDetails }) {
             </span>
           </div>
         </CardContent>
-
-        {/* Add to Cart Button */}
+      </div>
+              {/* Add to Cart Button */}
         <CardFooter className="p-4 pt-0">
           <Button
+            onClick={()=>handleAddToCart(product?._id)}
             className="w-full bg-neutral-900 hover:bg-black text-white font-medium rounded-lg"
           >
             Add to cart
           </Button>
         </CardFooter>
-      </div>
     </Card>
   );
 }

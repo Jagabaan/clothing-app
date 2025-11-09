@@ -4,8 +4,38 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, fetchCartItems } from "@/storage/shop/cart-slice";
+import { toast } from "sonner";
+
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
+
+  const dispatch = useDispatch()
+  const {user} = useSelector(state=>state.auth)
+
+  function handleAddToCart(getCurrentProductId) {
+    console.log("🧠 addToCart payload:", {
+  userId: user?.id,
+  productId: getCurrentProductId,
+  quantity: 1,
+});
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+        toast.success("Product added to cart successfully!");
+      } else {
+        toast.error("Failed to add product. Please try again.");
+      }
+    });
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="grid grid-cols-2 gap-8 sm:p-8 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] bg-white text-neutral-900 rounded-2xl shadow-lg">
@@ -48,7 +78,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           </div>
 
           <div className="mt-5 mb-5">
-            <Button className="w-full bg-neutral-900 hover:bg-black text-white rounded-lg shadow-md">
+            <Button onClick={()=>handleAddToCart(productDetails?._id)} className="w-full bg-neutral-900 hover:bg-black text-white rounded-lg shadow-md">
               Add to cart
             </Button>
           </div>
