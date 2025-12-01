@@ -18,6 +18,10 @@ import {
 import ShoppingProductTile from "../../components/userFrontEnd/product-tile";
 import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "../../components/userFrontEnd/product-details";
+import { addToCart, fetchCartItems } from "@/storage/shop/cart-slice";
+import { toast } from "sonner";
+
+
 
 // --- Helper ---
 function createSearchParamsHelper(filterParams) {
@@ -36,10 +40,12 @@ function ShoppingListing() {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { user } = useSelector(state => state.auth); 
   const [filters, setFilters] = useState({});
   const [sort, setSortBy] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
 
   // --- Handlers ---
   const handleSort = useCallback((value) => {
@@ -74,6 +80,24 @@ function ShoppingListing() {
     [dispatch]
   );
 
+function handleAddToCart(getCurrentProductId) {
+  dispatch(
+    addToCart({
+      userId: user?.id,
+      productId: getCurrentProductId,
+      quantity: 1,
+    })
+  ).then((data) => {
+    if (data?.payload?.success) {
+      dispatch(fetchCartItems(user?.id));
+      toast.success("Product added to cart successfully!");
+    } else {
+      toast.error("Failed to add product. Please try again.");
+    }
+  });
+}
+
+
   // --- Effects ---
   useEffect(() => {
     setSortBy("price-lowtohigh");
@@ -98,6 +122,7 @@ function ShoppingListing() {
     if (productDetails) setOpenDetailsDialog(true);
   }, [productDetails]);
 
+
   // --- Memoized Product Tiles ---
   const productTiles = useMemo(() => {
     if (!productList || productList.length === 0)
@@ -115,6 +140,7 @@ function ShoppingListing() {
         <ShoppingProductTile
           handleFetProductDetails={handleFetProductDetails}
           product={productItem}
+          handleAddToCart={handleAddToCart}
         />
       </div>
     ));

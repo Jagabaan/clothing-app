@@ -14,6 +14,8 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { logoutUser } from "@/storage/authSlice";
+import UserCartWrapper from "./cart-wrapper";
+import { useState } from "react";
 
 function MenuItem() {
   return (
@@ -33,6 +35,8 @@ function MenuItem() {
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -42,15 +46,31 @@ function HeaderRightContent() {
 
   return (
     <div className="flex items-center gap-3">
-      {/* Cart Button */}
-      <Button
-        variant="outline"
-        size="icon"
-        className="relative border-neutral-300 bg-white hover:border-black hover:bg-neutral-100 transition-all rounded-full shadow-sm hover:shadow-md"
-      >
-        <ShoppingCart className="w-5 h-5 text-neutral-800 hover:text-black transition-transform hover:scale-110" />
-        <span className="sr-only">User cart</span>
-      </Button>
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+        <Button
+          onClick={() => setOpenCartSheet(true)}
+          variant="outline"
+          size="icon"
+          className="relative border-neutral-300 bg-white hover:border-black hover:bg-neutral-100 transition-all rounded-full shadow-sm hover:shadow-md"
+        >
+          <ShoppingCart className="w-5 h-5 text-neutral-800 hover:text-black transition-transform hover:scale-110" />
+          <span className="sr-only">User cart</span>
+
+          {/* 🟢 Cart count badge */}
+          {cartItems?.items?.length > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+              {cartItems.items.length}
+            </span>
+          )}
+        </Button>
+        <UserCartWrapper
+          cartItems={
+            cartItems && cartItems.items && cartItems.items.length > 0
+              ? cartItems.items
+              : []
+          }
+        />
+      </Sheet>
 
       {/* User Dropdown */}
       <DropdownMenu>
